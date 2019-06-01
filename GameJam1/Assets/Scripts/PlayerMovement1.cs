@@ -36,11 +36,10 @@ public class PlayerMovement1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // moveDir = (playerNum == 1 ? Input.GetAxisRaw("JHorizontal1") : Input.GetAxisRaw("Horizontal2"));
         moveDir = (playerNum == 1 ? Input.GetAxisRaw("Horizontal1") : Input.GetAxisRaw("Horizontal2"));
         jumpPressed = (playerNum == 1 ? Input.GetButton("Jump1") : Input.GetButton("Jump2"));
-
-        
-        
+        Debug.Log(Input.GetButton("Jump2"));
     }
 
     void FixedUpdate()
