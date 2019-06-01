@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrapplingHook : MonoBehaviour
+public class GrapplingHook : MonoBehaviour, IWeapon
 {
-    public int playerNum = 1;
-
+    private int playerNum = 0;
     private float indicatorRange = 2.5f;
     private Vector3 aimVec;
     private Vector3 indicatorVec;
@@ -14,14 +13,15 @@ public class GrapplingHook : MonoBehaviour
     private int hookSpeed = 30;
     private bool hookIsTraveling = false;
     private bool hookHitEnvironment = false;
+    private bool hookInUse = false;
 
     public GameObject aimIndicator;
     public GameObject grapplingHook;
     public LayerMask hookAble;
     public LineRenderer line;
 
+    private bool disableHook;
     private DistanceJoint2D joint;
-    //private SpringJoint2D joint;
     private Rigidbody2D rb;
     private PlayerMovement pm;
 
@@ -29,9 +29,10 @@ public class GrapplingHook : MonoBehaviour
     void Start()
     {
         joint = GetComponent<DistanceJoint2D>();
-        //joint = GetComponent<SpringJoint2D>();
+        playerNum = GetComponentInParent<PlayerController>().playerNum;
         rb = GetComponent<Rigidbody2D>();
         pm = GetComponent<PlayerMovement>();
+        disableHook = false;
     }
 
     // Update is called once per frame
@@ -43,25 +44,26 @@ public class GrapplingHook : MonoBehaviour
         aimVec.x = aimX;
         aimVec.y = aimY * -1;
 
-        indicatorVec = transform.position + aimVec * indicatorRange;
-        aimIndicator.transform.position =  indicatorVec;
+        if(!disableHook){
+            indicatorVec = transform.position + aimVec * indicatorRange;
+            aimIndicator.transform.position =  indicatorVec;
+        }
         
         var fireGrapplingHook = (playerNum == 1) ? Input.GetAxisRaw("Fire1") : Input.GetAxisRaw("Fire2");
-        if (fireGrapplingHook > .2f)
+        if (fireGrapplingHook > .2f && !disableHook)
         {
-            if (!hookIsTraveling && !grapplingHook.activeInHierarchy)
+            if (!hookIsTraveling && !hookInUse)
             {
                 // initial shot
-                Debug.Log("init shot");
+                //Debug.Log("init shot");
                 hookVec = aimVec.normalized;
                 hookIsTraveling = true;
-                grapplingHook.SetActive(true);
+                hookInUse = true;
                 grapplingHook.transform.position = transform.position;
             }
             else if(hookHitEnvironment)
             {
                 // swinging
-                //Debug.Log("woohooo");
                 pm.enableDrag(false);
                 pm.enableHorizontalMovement(false);
                 line.SetPosition(0, transform.position);
@@ -69,7 +71,7 @@ public class GrapplingHook : MonoBehaviour
             else if (hookIsTraveling)
             {
                 // hook is traveling
-                Debug.Log("is traveling");
+                //Debug.Log("is traveling");
                 var collidersHit = Physics2D.OverlapCircleAll(grapplingHook.transform.position, .2f, hookAble);
                 var hookHitDetection = IsValidHit(collidersHit);
 
@@ -84,7 +86,6 @@ public class GrapplingHook : MonoBehaviour
                     // latch to environment
                     hookHitEnvironment = true;
                     hookIsTraveling = false;
-                    //joint.anchor = transform.position;
                     joint.connectedAnchor = grapplingHook.transform.position;
                     var distOffset = (pm.isGrounded) ? -1 : 0;
                     joint.distance = Vector2.Distance(grapplingHook.transform.position, transform.position) + distOffset;
@@ -92,18 +93,34 @@ public class GrapplingHook : MonoBehaviour
                 }
 
             }
-        } else if(grapplingHook.activeInHierarchy)
+        } else if(hookInUse)
         {
-            Debug.Log("hook reset");
+            //Debug.Log("hook reset");
             // reset hook
-            grapplingHook.SetActive(false);
-            hookIsTraveling = false;
-            joint.enabled = false;
-            line.enabled = false;
-            hookHitEnvironment = false;
-            pm.enableDrag(true);
-            pm.enableHorizontalMovement(true);
+            ResetHook();
         }
+        else
+        {
+            // while hook not in use, follow player
+            grapplingHook.transform.position = transform.position;
+        }
+    }
+
+    private void OnEnable()
+    {
+        grapplingHook.transform.position = transform.position;
+    }
+
+    private void ResetHook()
+    {
+        hookInUse = false;
+        hookIsTraveling = false;
+        joint.enabled = false;
+        line.enabled = false;
+        hookHitEnvironment = false;
+        pm.enableDrag(true);
+        pm.enableHorizontalMovement(true);
+        grapplingHook.transform.position = transform.position;
     }
 
     private bool IsValidHit(Collider2D[] cols)
@@ -112,15 +129,25 @@ public class GrapplingHook : MonoBehaviour
  
         foreach (var col in cols)
         {
-            var p = col.gameObject.GetComponent<PlayerMovement>();
+            var p = col.gameObject.GetComponentInParent<PlayerController>();
             if (p != null && p.playerNum == playerNum)
             {
-                Debug.Log("hit this");
+                //Debug.Log("hit this");
                 return false;
             }
         }
-        Debug.Log("valid: " + cols[0].ToString());
+        //Debug.Log("valid: " + cols[0].ToString());
         return true;
+    }
+
+    public void enableHook(bool enable){
+        disableHook = !enable;
+    }
+
+    public void EnableWeapon(bool shouldEnable)
+    {
+        enabled = shouldEnable;
+        grapplingHook.SetActive(shouldEnable);
     }
 
 }

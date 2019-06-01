@@ -111,21 +111,21 @@ public class SpaceShip : MonoBehaviour, IInteractable
     public void interact(GameObject interacter)
     {
         if(playerInRightSeat == interacter){
-            interacter.GetComponent<PlayerMovement1>().enableMovement(true);
+            interacter.GetComponent<PlayerMovement>().enableMovement(true);
             playerInRightSeat = null;
             if(playerInLeftSeat == null){
                 coreEngine1 = false;
                 coreEngine2 = false;
             }
         } else if(playerInLeftSeat == interacter){
-            interacter.GetComponent<PlayerMovement1>().enableMovement(true);
+            interacter.GetComponent<PlayerMovement>().enableMovement(true);
             playerInLeftSeat = null;
             if(playerInRightSeat == null){
                 coreEngine1 = false;
                 coreEngine2 = false;
             }
         } else {
-            interacter.GetComponent<PlayerMovement1>().enableMovement(false);
+            interacter.GetComponent<PlayerMovement>().enableMovement(false);
             if(playerInRightSeat == null){
                 playerInRightSeat = interacter;
 
