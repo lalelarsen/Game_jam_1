@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpPressed)
         {
-            Debug.Log("jumped");
+            //Debug.Log("jumped");
         }
     }
 }

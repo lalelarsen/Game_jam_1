@@ -6,8 +6,9 @@ public class GrapplingHook : MonoBehaviour
 {
     public int playerNum = 1;
 
-    private int indicatorRange = 25;
-    private Vector3 aim;
+    private float indicatorRange = 2.5f;
+    private Vector3 aimVec;
+    private Vector3 indicatorVec;
 
     public GameObject aimIndicator;
 
@@ -25,11 +26,11 @@ public class GrapplingHook : MonoBehaviour
 
         var aimX = (playerNum == 1) ? Input.GetAxisRaw("AimX1") : Input.GetAxisRaw("AimX2");
         var aimY = (playerNum == 1) ? Input.GetAxisRaw("AimY1") : Input.GetAxisRaw("AimY2");
-        aim.x = aimX * indicatorRange;
-        aim.y = aimY * indicatorRange * -1;
-        Debug.Log($"aimx: {aimX}, aimy: {aimY}");
+        aimVec.x = aimX;
+        aimVec.y = aimY * -1;
 
-        aimIndicator.transform.position = transform.position + aim;
+        indicatorVec = transform.position + aimVec * indicatorRange;
+        aimIndicator.transform.position =  indicatorVec;
         
 
     }
