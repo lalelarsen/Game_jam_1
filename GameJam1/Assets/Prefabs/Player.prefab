@@ -75,7 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39e0b6408c2d3e940b3e52171396dd68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNum: 1
   gunGfx: {fileID: 2113304735}
   playerPos: {fileID: 1577352280333119146}
   bulletPrefab: {fileID: 953411986543771334, guid: e3c1f7cb0c139d64c9866972fc13bf31,
@@ -511,7 +510,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda281005472ec747afa29fa693f2126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNum: 1
   acceleration: 100
   drag: 0.87
   isGrounded: 0
@@ -531,7 +529,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c29d91c581b1541bd6762eb59e8395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNum: 1
   aimIndicator: {fileID: 1577352279644581128}
   grapplingHook: {fileID: 1577352281258768078}
   hookAble:
@@ -569,7 +566,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8328eebc2aca644ca15db08518cff44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerNum: 1
   interactionRange: 5
   interact: 0
 --- !u!1 &1577352281191437108

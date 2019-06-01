@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int playerNum = 1;
+    
     public int acceleration = 300;
     public float drag = 0.87f;
     public bool isGrounded = false;
@@ -12,16 +12,17 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     public Transform groundCheck;
 
+    private int playerNum;
     private float moveDir = 0;
     private bool jumpPressed = false;
     private int jumpForce = 5;
-
     private float maxVelocity = 10;
     private float groundRadiusCheck = .1f;
     private float maxJumpTime = 0.5f;
     private float currentJumpTime;
     private bool movementDisabled = false;
 
+    private GrapplingHook grapplingHook;
     private Rigidbody2D rb;
     private Vector2 targetedVelocity;
 
@@ -29,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        grapplingHook = GetComponent<GrapplingHook>();
+        playerNum = GetComponentInParent<PlayerController>().playerNum;
     }
 
     // Update is called once per frame
@@ -64,14 +67,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (isGrounded && jumpPressed)
+        if (isGrounded && jumpPressed && !movementDisabled)
         {
             targetedVelocity.x = rb.velocity.x;
             targetedVelocity.y = 12;
             rb.velocity = targetedVelocity;
             currentJumpTime = maxJumpTime;
         }
-        else if (!isGrounded && jumpPressed && currentJumpTime > 0)
+        else if (!isGrounded && jumpPressed && currentJumpTime > 0 && !movementDisabled)
         {
             currentJumpTime -= Time.fixedDeltaTime;
             targetedVelocity.x = rb.velocity.x;
@@ -82,15 +85,19 @@ public class PlayerMovement : MonoBehaviour
             // falling
         }
 
-        if (jumpPressed)
-        {
-            //Debug.Log("jumped");
-        }
     }
 
     public void enableDrag(bool enable)
     {
         drag = (enable) ? 0.87f : 1;
+    }
+
+    public void enableMovement(bool enable){
+        rb.mass = enable ? 1 : 0;
+        rb.angularDrag = enable ? 0.05f : 0;
+        rb.gravityScale = enable ? 3 : 0;
+        enableHorizontalMovement(enable);
+        grapplingHook.enableHook(enable);
     }
 
     public void enableHorizontalMovement(bool enable)

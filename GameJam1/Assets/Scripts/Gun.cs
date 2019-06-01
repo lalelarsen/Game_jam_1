@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour, IWeapon
 {
-    public int playerNum = 1;
 
     public GameObject gunGfx;
     public GameObject playerPos;
     public GameObject bulletPrefab;
     public Transform bulletSpawnPos;
 
+    private int playerNum = 0;
     private float shootCDMax = .2f;
     private float shootCDActual = 0f;
 
@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour, IWeapon
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerNum = GetComponentInParent<PlayerController>().playerNum;
     }
 
     // Update is called once per frame

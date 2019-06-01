@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public int playerNum = 1;
     public float interactionRange = 5;
     public bool interact = false;
+
+    private int playerNum = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerNum = GetComponentInParent<PlayerController>().playerNum;
     }
 
     // Update is called once per frame
