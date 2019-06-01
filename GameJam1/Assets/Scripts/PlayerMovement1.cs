@@ -39,7 +39,6 @@ public class PlayerMovement1 : MonoBehaviour
         // moveDir = (playerNum == 1 ? Input.GetAxisRaw("JHorizontal1") : Input.GetAxisRaw("Horizontal2"));
         moveDir = (playerNum == 1 ? Input.GetAxisRaw("Horizontal1") : Input.GetAxisRaw("Horizontal2"));
         jumpPressed = (playerNum == 1 ? Input.GetButton("Jump1") : Input.GetButton("Jump2"));
-        Debug.Log(Input.GetButton("Jump2"));
     }
 
     void FixedUpdate()
@@ -75,8 +74,5 @@ public class PlayerMovement1 : MonoBehaviour
             rb.AddForce(targetedVelocity);
         }
 
-        if(jumpPressed){
-            Debug.Log("jumped");
-        }
     }
 }
