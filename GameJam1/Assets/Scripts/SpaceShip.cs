@@ -17,10 +17,11 @@ public class SpaceShip : MonoBehaviour, IInteractable
     private Vector3 leftEnginePos;
     private Vector3 rightSeatPos;
     private Vector3 leftSeatPos;
-    private GameObject playerInRightSeat;
-    private GameObject playerInLeftSeat;
+    public GameObject playerInRightSeat;
+    public GameObject playerInLeftSeat;
     private float fireR;
     private float fireL;
+    private Collider2D col;
     
     
     void Start()
@@ -30,9 +31,10 @@ public class SpaceShip : MonoBehaviour, IInteractable
         coreEngine2 = false;
         rightEnginePos = new Vector3(0.45f,0,0);
         leftEnginePos = new Vector3(-0.45f,0,0);
-        rightSeatPos = new Vector3(0.3f,0.2f,-0.1f);
-        leftSeatPos = new Vector3(-0.3f,0.2f,-0.1f);
+        rightSeatPos = new Vector3(0.3f,0.4f,0.1f);
+        leftSeatPos = new Vector3(-0.3f,0.4f,0.1f);
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -64,14 +66,37 @@ public class SpaceShip : MonoBehaviour, IInteractable
         }
         rb.AddForce(rb.transform.up*(power*forceMultiplier));
         
+        if(playerInRightSeat != null){
+            playerInRightSeat.transform.position = gameObject.transform.TransformPoint(rightSeatPos);
+            playerInRightSeat.transform.rotation = gameObject.transform.rotation;
+        }
+        if(playerInLeftSeat != null){
+            playerInLeftSeat.transform.position = gameObject.transform.TransformPoint(leftSeatPos);
+            playerInLeftSeat.transform.rotation = gameObject.transform.rotation;
+        }
     }
 
-    public void interact(GameObject gameObject)
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Player"){
+            Physics2D.IgnoreCollision(other.collider,col);
+        }
+    }
+    public void interact(GameObject interacter)
     {
-        if(playerInRightSeat == null){
-            playerInRightSeat = gameObject;
+        if(playerInRightSeat == interacter){
+            interacter.GetComponent<PlayerMovement1>().enableMovement(true);
+            playerInRightSeat = null;
+        } else if(playerInLeftSeat == interacter){
+            interacter.GetComponent<PlayerMovement1>().enableMovement(true);
+            playerInLeftSeat = null;
         } else {
-            playerInLeftSeat = gameObject;
+            interacter.GetComponent<PlayerMovement1>().enableMovement(false);
+            if(playerInRightSeat == null){
+                playerInRightSeat = interacter;
+
+            } else {
+                playerInLeftSeat = interacter;
+            }
         }
     }
 }
