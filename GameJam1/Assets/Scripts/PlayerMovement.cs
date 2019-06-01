@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public int playerNum = 1;
     public int acceleration = 300;
     public float drag = 0.87f;
+    public bool isGrounded = false;
 
     public LayerMask whatIsGround;
     public Transform groundCheck;
@@ -16,10 +17,10 @@ public class PlayerMovement : MonoBehaviour
     private int jumpForce = 5;
 
     private float maxVelocity = 10;
-    private bool isGrounded = false;
     private float groundRadiusCheck = .1f;
     private float maxJumpTime = 0.5f;
     private float currentJumpTime;
+    private bool movementDisabled = false;
 
     private Rigidbody2D rb;
     private Vector2 targetedVelocity;
@@ -40,25 +41,27 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadiusCheck, whatIsGround);
+        if (!movementDisabled)
+        {
+            if (rb.velocity.x * moveDir > maxVelocity)
+            {
+                targetedVelocity.x = maxVelocity * moveDir;
+                targetedVelocity.y = rb.velocity.y;
+                rb.velocity = targetedVelocity;
+            }
+            else
+            {
+                targetedVelocity.x = moveDir * acceleration;
+                targetedVelocity.y = 0;
+                rb.AddForce(targetedVelocity);
+            }
 
-        if (rb.velocity.x * moveDir > maxVelocity)
-        {
-            targetedVelocity.x = maxVelocity * moveDir;
-            targetedVelocity.y = rb.velocity.y;
-            rb.velocity = targetedVelocity;
-        }
-        else
-        {
-            targetedVelocity.x = moveDir * acceleration;
-            targetedVelocity.y = 0;
-            rb.AddForce(targetedVelocity);
-        }
-
-        if (moveDir == 0)
-        {
-            targetedVelocity.x = rb.velocity.x * drag;
-            targetedVelocity.y = rb.velocity.y;
-            rb.velocity = targetedVelocity;
+            if (moveDir == 0)
+            {
+                targetedVelocity.x = rb.velocity.x * drag;
+                targetedVelocity.y = rb.velocity.y;
+                rb.velocity = targetedVelocity;
+            }
         }
 
         if (isGrounded && jumpPressed)
@@ -84,4 +87,15 @@ public class PlayerMovement : MonoBehaviour
             //Debug.Log("jumped");
         }
     }
+
+    public void enableDrag(bool enable)
+    {
+        drag = (enable) ? 0.87f : 1;
+    }
+
+    public void enableHorizontalMovement(bool enable)
+    {
+        movementDisabled = !enable;
+    }
+
 }
