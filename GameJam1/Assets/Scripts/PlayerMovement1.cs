@@ -66,14 +66,14 @@ public class PlayerMovement1 : MonoBehaviour
             }
         }
 
-        if (isGrounded && jumpPressed)
+        if (isGrounded && jumpPressed && !movementDisabled)
         {
             targetedVelocity.x = rb.velocity.x;
             targetedVelocity.y = 12;
             rb.velocity = targetedVelocity;
             currentJumpTime = maxJumpTime;
         }
-        else if (!isGrounded && jumpPressed && currentJumpTime > 0)
+        else if (!isGrounded && jumpPressed && currentJumpTime > 0 && !movementDisabled)
         {
             currentJumpTime -= Time.fixedDeltaTime;
             targetedVelocity.x = rb.velocity.x;
@@ -84,10 +84,6 @@ public class PlayerMovement1 : MonoBehaviour
             // falling
         }
 
-        if (jumpPressed)
-        {
-            //Debug.Log("jumped");
-        }
     }
 
     public void enableDrag(bool enable)

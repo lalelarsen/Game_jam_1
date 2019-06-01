@@ -41,15 +41,42 @@ public class SpaceShip : MonoBehaviour, IInteractable
     void Update()
     {
         if(Input.GetButtonDown("Jump1")){
-            coreEngine1 = !coreEngine1;
+            if(playerInRightSeat != null && playerInLeftSeat != null){
+                coreEngine1 = !coreEngine1;
+            } else if(playerInRightSeat != null || playerInLeftSeat != null){
+                if(!coreEngine1){
+                    coreEngine1 = !coreEngine1;
+                } else {
+                    coreEngine1 = false;
+                    coreEngine2 = false;
+                }
+            }
         }
         if(Input.GetButtonDown("Jump2")){
-            coreEngine2 = !coreEngine2;
+            if(playerInRightSeat != null && playerInLeftSeat != null){
+                coreEngine2 = !coreEngine2;
+            } else if(playerInRightSeat != null || playerInLeftSeat != null){
+                if(!coreEngine1){
+                    coreEngine1 = !coreEngine1;
+                } else {
+                    coreEngine1 = false;
+                    coreEngine2 = false;
+                }
+            }
         }
     }
     private void FixedUpdate() {
-        var fireR = Input.GetAxisRaw("Fire1") + Input.GetAxisRaw("Fire2");
-        var fireL = Input.GetAxisRaw("FireL1") + Input.GetAxisRaw("FireL2");
+        float fireR = 0;
+        float fireL = 0;
+        if(playerInRightSeat != null && playerInLeftSeat != null){
+            string rightSeatName = playerInRightSeat.transform.parent.name.Substring(playerInRightSeat.transform.parent.name.Length-1,1);
+            string leftSeatName = playerInLeftSeat.transform.parent.name.Substring(playerInLeftSeat.transform.parent.name.Length-1,1);
+            fireR = Input.GetAxisRaw("Fire" + rightSeatName);
+            fireL = Input.GetAxisRaw("Fire" + leftSeatName);
+        } else if(playerInRightSeat != null || playerInLeftSeat != null){
+            fireR = Input.GetAxisRaw("Fire1") + Input.GetAxisRaw("Fire2");
+            fireL = Input.GetAxisRaw("FireL1") + Input.GetAxisRaw("FireL2");
+        }
         
         forceR.x = rb.transform.up.x*(power/10*fireR);
         forceR.y = rb.transform.up.y*(power/10*fireR);
@@ -86,9 +113,17 @@ public class SpaceShip : MonoBehaviour, IInteractable
         if(playerInRightSeat == interacter){
             interacter.GetComponent<PlayerMovement1>().enableMovement(true);
             playerInRightSeat = null;
+            if(playerInLeftSeat == null){
+                coreEngine1 = false;
+                coreEngine2 = false;
+            }
         } else if(playerInLeftSeat == interacter){
             interacter.GetComponent<PlayerMovement1>().enableMovement(true);
             playerInLeftSeat = null;
+            if(playerInRightSeat == null){
+                coreEngine1 = false;
+                coreEngine2 = false;
+            }
         } else {
             interacter.GetComponent<PlayerMovement1>().enableMovement(false);
             if(playerInRightSeat == null){
