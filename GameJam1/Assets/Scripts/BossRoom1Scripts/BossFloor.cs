@@ -26,17 +26,21 @@ public class BossFloor : MonoBehaviour
             fallable = true;
         } else {
             if(fallable){
-                transform.DOShakePosition(1, shakeStrength, 0, 180, false, false).OnComplete(()=>{
+                transform.DOShakePosition(2, shakeStrength, 0, 180, false, false).OnComplete(()=>{
                     fallable = false;
-                    transform.DOMove(downPosition,4).SetEase(Ease.Linear).OnComplete(()=>{
+                    transform.DOMove(downPosition,2.5f).SetEase(Ease.Linear).OnComplete(()=>{
                     });
                 });
             }
         }
     }
 
-    public void collapse(){
-        up = false;
+    public void phaseChange(string phase){
+        switch(phase){
+            case "Phase2Trans":
+                up = false;
+            break;
+        }
     }
 
 }
