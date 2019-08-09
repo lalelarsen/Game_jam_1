@@ -87,4 +87,9 @@ public class Gun : MonoBehaviour, IWeapon
         enabled = shouldEnable;
         gunGfx.SetActive(shouldEnable);
     }
+
+    public void DisposeWeapon()
+    {
+        // Nothing to dispose
+    }
 }

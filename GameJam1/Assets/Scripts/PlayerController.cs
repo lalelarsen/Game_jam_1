@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
         if(switchPressed)
         {
             inventory[inventoryIndex].EnableWeapon(false);
+            inventory[inventoryIndex].DisposeWeapon();
             inventoryIndex = (inventoryIndex + 1 >= inventory.Length) ? 0 : inventoryIndex + 1;
             inventory[inventoryIndex].EnableWeapon(true);
         }

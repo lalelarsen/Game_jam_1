@@ -150,4 +150,10 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         grapplingHook.SetActive(shouldEnable);
     }
 
+    public void DisposeWeapon()
+    {
+        ResetHook();
+        aimIndicator.transform.position = transform.position;
+    }
+
 }

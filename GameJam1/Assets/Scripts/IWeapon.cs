@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IWeapon
 {
     void EnableWeapon(bool enable);
+    void DisposeWeapon();
 }
