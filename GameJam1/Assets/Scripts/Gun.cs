@@ -10,9 +10,11 @@ public class Gun : MonoBehaviour, IWeapon
     public GameObject bulletPrefab;
     public Transform bulletSpawnPos;
 
+    private PlayerController playerCon;
     private int playerNum = 0;
     private float shootCDMax = .2f;
     private float shootCDActual = 0f;
+    private Vector3 moveDir = Vector3.right;
 
     private Vector3 aimVec;
     private Vector3 gunVec;
@@ -21,12 +23,22 @@ public class Gun : MonoBehaviour, IWeapon
     // Start is called before the first frame update
     void Start()
     {
-        playerNum = GetComponentInParent<PlayerController>().playerNum;
+        playerCon = GetComponentInParent<PlayerController>();
+        playerNum = playerCon.playerNum;
+        gunVec = moveDir;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(playerCon.moveDir < 0)
+        {
+            moveDir = Vector3.down;
+        } else if (playerCon.moveDir > 0)
+        {
+            moveDir = Vector3.up;
+        }
+
         var aimY = (playerNum == 1) ? Input.GetAxisRaw("AimX1") : Input.GetAxisRaw("AimX2");
         var aimX = (playerNum == 1) ? Input.GetAxisRaw("AimY1") : Input.GetAxisRaw("AimY2");
         aimVec.x = aimX * 1;
@@ -54,7 +66,7 @@ public class Gun : MonoBehaviour, IWeapon
     private void FireBullet()
     {
         // find bullet rotation
-        var tempAim = aimVec;
+        var tempAim = gunVec;
         if (Mathf.Abs(aimVec.x) < 0.1 && Mathf.Abs(aimVec.y) < 0.1)
         {
             tempAim.x = 0;
@@ -73,8 +85,53 @@ public class Gun : MonoBehaviour, IWeapon
     {
         transform.position = playerPos.transform.position;
 
-        gunVec.x = aimVec.x * -1;
-        gunVec.y = aimVec.y * 1;
+        if (aimVec == Vector3.zero)
+        {
+            gunVec = moveDir;
+        }
+        else
+        {
+            if(Mathf.Abs(Vector3.Angle(Vector3.left+Vector3.down, aimVec)) < 22)
+            {
+                Debug.Log("left up");
+                gunVec.x = 1;
+                gunVec.y = -1;
+            }
+            else if (Mathf.Abs(Vector3.Angle(Vector3.left + Vector3.up, aimVec)) < 22)
+            {
+                Debug.Log("right up");
+                gunVec.x = 1;
+                gunVec.y = 1;
+            }
+            else if (Mathf.Abs(Vector3.Angle(Vector3.left, aimVec)) <= 22)
+            {
+                Debug.Log("up");
+                gunVec.x = 1;
+                gunVec.y = 0;
+            }
+            else if (Mathf.Abs(Vector3.Angle(Vector3.down, aimVec)) <= 22)
+            {
+                Debug.Log("left");
+                gunVec.x = 0;
+                gunVec.y = -1;
+            }
+            else if (Mathf.Abs(Vector3.Angle(Vector3.up, aimVec)) <= 22)
+            {
+                Debug.Log("right");
+                gunVec.x = 0;
+                gunVec.y = 1;
+            }
+            else
+            {
+                gunVec = moveDir;
+            }
+        }
+
+        //if(aimVec != Vector3.zero)
+        //{
+        //    gunVec.x = aimVec.x * -1;
+        //    gunVec.y = aimVec.y * 1;
+        //}
 
         // calculate gun gfx rotation
         float heading = Mathf.Atan2(gunVec.x, gunVec.y);

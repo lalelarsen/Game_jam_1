@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private float currentJumpTime;
     private bool movementDisabled = false;
 
+    private PlayerController playerCon;
     private GrapplingHook grapplingHook;
     private Rigidbody2D rb;
     private Vector2 targetedVelocity;
@@ -31,13 +32,15 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         grapplingHook = GetComponent<GrapplingHook>();
-        playerNum = GetComponentInParent<PlayerController>().playerNum;
+        playerCon = GetComponentInParent<PlayerController>();
+        playerNum = playerCon.playerNum;
+        moveDir = playerCon.moveDir;
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveDir = (playerNum == 1 ? Input.GetAxisRaw("Horizontal1") : Input.GetAxisRaw("Horizontal2"));
+        moveDir = playerCon.moveDir;
         jumpPressed = (playerNum == 1 ? Input.GetButton("Jump1") : Input.GetButton("Jump2"));
     }
 

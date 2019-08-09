@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public int playerNum = 1;
+    public float moveDir = 0;
 
     private IWeapon[] inventory;
 
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        moveDir = (playerNum == 1 ? Input.GetAxisRaw("Horizontal1") : Input.GetAxisRaw("Horizontal2"));
         bool switchPressed = (playerNum == 1 ? Input.GetButtonDown("Switch1") : Input.GetButtonDown("Switch2"));
         if(switchPressed)
         {
