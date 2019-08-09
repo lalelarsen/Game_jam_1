@@ -5,12 +5,12 @@ using UnityEngine;
 public class GrapplingHook : MonoBehaviour, IWeapon
 {
     private int playerNum = 0;
-    private float indicatorRange = 2.5f;
+    private readonly float indicatorRange = 2.5f;
     private Vector3 aimVec;
     private Vector3 indicatorVec;
 
     private Vector3 hookVec;
-    private int hookSpeed = 30;
+    private readonly int hookSpeed = 30;
     private bool hookIsTraveling = false;
     private bool hookHitEnvironment = false;
     private bool hookInUse = false;
@@ -50,9 +50,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         }
         
         var fireGrapplingHook = (playerNum == 1) ? Input.GetAxisRaw("Fire1") : Input.GetAxisRaw("Fire2");
+
+        // is GH triggered
         if (fireGrapplingHook > .2f && !disableHook)
         {
-            if (!hookIsTraveling && !hookInUse)
+            // is it initial shot
+            if (!hookIsTraveling && !hookInUse && IsAimingForSomthing())
             {
                 // initial shot
                 //Debug.Log("init shot");
@@ -61,6 +64,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon
                 hookInUse = true;
                 grapplingHook.transform.position = transform.position;
             }
+            // did GH hit anything
             else if(hookHitEnvironment)
             {
                 // swinging
@@ -68,6 +72,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon
                 pm.enableHorizontalMovement(false);
                 line.SetPosition(0, transform.position);
             }
+            // is GH traveling in air
             else if (hookIsTraveling)
             {
                 // hook is traveling
@@ -93,6 +98,11 @@ public class GrapplingHook : MonoBehaviour, IWeapon
                 }
 
             }
+            // shouldnt GH fire at all
+            else
+            {
+                grapplingHook.transform.position = transform.position;
+            }
         } else if(hookInUse)
         {
             //Debug.Log("hook reset");
@@ -109,6 +119,11 @@ public class GrapplingHook : MonoBehaviour, IWeapon
     private void OnEnable()
     {
         grapplingHook.transform.position = transform.position;
+    }
+
+    private bool IsAimingForSomthing()
+    {
+        return aimVec != Vector3.zero;
     }
 
     private void ResetHook()
@@ -130,6 +145,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         foreach (var col in cols)
         {
             var p = col.gameObject.GetComponentInParent<PlayerController>();
+            // make sure you dont hit a player
             if (p != null && p.playerNum == playerNum)
             {
                 //Debug.Log("hit this");
@@ -140,7 +156,7 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         return true;
     }
 
-    public void enableHook(bool enable){
+    public void EnableHook(bool enable){
         disableHook = !enable;
     }
 

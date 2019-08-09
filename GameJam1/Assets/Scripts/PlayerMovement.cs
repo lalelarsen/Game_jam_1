@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         rb.angularDrag = enable ? 0.05f : 0;
         rb.gravityScale = enable ? 3 : 0;
         enableHorizontalMovement(enable);
-        grapplingHook.enableHook(enable);
+        grapplingHook.EnableHook(enable);
     }
 
     public void enableHorizontalMovement(bool enable)
