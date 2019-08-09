@@ -43,7 +43,7 @@ public class BossRoomController : MonoBehaviour
 
             case Phases.Phase1:
                 if(attackMove == 0 && pickNewAttackMove){
-                    if(moveNo == 1){
+                    if(moveNo == 4){
                         phase = Phases.Phase2Trans;
                         return;
                     }
@@ -77,7 +77,27 @@ public class BossRoomController : MonoBehaviour
             break;
 
             case Phases.Phase2:
+                if(attackMove == 0 && pickNewAttackMove){
+                    attackMove = Mathf.RoundToInt(Random.Range(0.5f, 4.5f));
+                    // attackMove = 4;
+                }
+                switch(attackMove){
+                    case 1:
+                        moveFromRightSide();
+                    break;
 
+                    case 2:
+                        moveFromLeftSide();
+                    break;
+                    
+                    case 3:
+                        hitFromRightSide();
+                    break;
+                    
+                    case 4:
+                        hitFromLeftSide();
+                    break;
+                }
             break;
 
             case Phases.Phase3Trans:
@@ -222,7 +242,10 @@ public class BossRoomController : MonoBehaviour
     
     private void Phase2Trans(){
         BroadcastMessage("phaseChange",phase.ToString());
-        doMoveWaitSeconds(4);
-        phase = Phases.Phase2;
+        // doMoveWaitSeconds(4);
+        timerObject.transform.DOMove(timerObject.transform.position,4).OnComplete(()=>{
+            attackMove = 0;
+            phase = Phases.Phase2;
+        });
     }
 }
