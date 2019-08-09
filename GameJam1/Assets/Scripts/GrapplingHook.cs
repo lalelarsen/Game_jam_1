@@ -11,9 +11,12 @@ public class GrapplingHook : MonoBehaviour, IWeapon
 
     private Vector3 hookVec;
     private readonly int hookSpeed = 30;
+    private readonly int hookMaxTravelTime = 1;
+    private float hookCurrentTravelTime = 0;
     private bool hookIsTraveling = false;
     private bool hookHitEnvironment = false;
     private bool hookInUse = false;
+    private bool hookIsExpired = true;
 
     public GameObject aimIndicator;
     public GameObject grapplingHook;
@@ -54,14 +57,15 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         // is GH triggered
         if (fireGrapplingHook > .2f && !disableHook)
         {
+            // Debug.Log(isNewTrigger.ToString());
             // is it initial shot
-            if (!hookIsTraveling && !hookInUse && IsAimingForSomthing())
+            if (!hookIsTraveling && !hookInUse && IsAimingForSomthing() && hookIsExpired)
             {
                 // initial shot
-                //Debug.Log("init shot");
                 hookVec = aimVec.normalized;
                 hookIsTraveling = true;
                 hookInUse = true;
+                hookIsExpired = false;
                 grapplingHook.transform.position = transform.position;
             }
             // did GH hit anything
@@ -75,8 +79,17 @@ public class GrapplingHook : MonoBehaviour, IWeapon
             // is GH traveling in air
             else if (hookIsTraveling)
             {
+
+                // did hook exceed max travel time
+                if (hookCurrentTravelTime > hookMaxTravelTime)
+                {
+                    ResetHook();
+                } else
+                {
+                    hookCurrentTravelTime += Time.deltaTime;
+                }
+
                 // hook is traveling
-                //Debug.Log("is traveling");
                 var collidersHit = Physics2D.OverlapCircleAll(grapplingHook.transform.position, .2f, hookAble);
                 var hookHitDetection = IsValidHit(collidersHit);
 
@@ -98,21 +111,22 @@ public class GrapplingHook : MonoBehaviour, IWeapon
                 }
 
             }
-            // shouldnt GH fire at all
+            // shouldn't GH fire at all
             else
             {
                 grapplingHook.transform.position = transform.position;
             }
         } else if(hookInUse)
         {
-            //Debug.Log("hook reset");
             // reset hook
             ResetHook();
+            hookIsExpired = true;
         }
         else
         {
             // while hook not in use, follow player
             grapplingHook.transform.position = transform.position;
+            hookIsExpired = true;
         }
     }
 
@@ -133,8 +147,10 @@ public class GrapplingHook : MonoBehaviour, IWeapon
         joint.enabled = false;
         line.enabled = false;
         hookHitEnvironment = false;
+        hookIsExpired = true;
         pm.enableDrag(true);
         pm.enableHorizontalMovement(true);
+        hookCurrentTravelTime = 0;
         grapplingHook.transform.position = transform.position;
     }
 
@@ -152,7 +168,6 @@ public class GrapplingHook : MonoBehaviour, IWeapon
                 return false;
             }
         }
-        //Debug.Log("valid: " + cols[0].ToString());
         return true;
     }
 
