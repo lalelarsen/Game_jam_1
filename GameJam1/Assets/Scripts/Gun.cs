@@ -34,6 +34,7 @@ public class Gun : MonoBehaviour, IWeapon
         if(playerCon.moveDir < 0)
         {
             moveDir = Vector3.down;
+            gunVec = moveDir;
         } else if (playerCon.moveDir > 0)
         {
             moveDir = Vector3.up;
@@ -67,11 +68,12 @@ public class Gun : MonoBehaviour, IWeapon
     {
         // find bullet rotation
         var tempAim = gunVec;
-        if (Mathf.Abs(aimVec.x) < 0.1 && Mathf.Abs(aimVec.y) < 0.1)
-        {
-            tempAim.x = 0;
-            tempAim.y = 1;
-        }
+        Debug.Log(tempAim.ToString());
+        //if (Mathf.Abs(aimVec.x) < 0.1 && Mathf.Abs(aimVec.y) < 0.1)
+        //{
+        //    tempAim.x = 0;
+        //    tempAim.y = 1;
+        //}
         float rot_z = Mathf.Atan2(tempAim.y, tempAim.x) * Mathf.Rad2Deg;
 
         // instantite bullet
@@ -88,36 +90,37 @@ public class Gun : MonoBehaviour, IWeapon
         if (aimVec == Vector3.zero)
         {
             gunVec = moveDir;
+
         }
         else
         {
             if(Mathf.Abs(Vector3.Angle(Vector3.left+Vector3.down, aimVec)) < 22)
             {
-                Debug.Log("left up");
+                //Debug.Log("left up");
                 gunVec.x = 1;
                 gunVec.y = -1;
             }
             else if (Mathf.Abs(Vector3.Angle(Vector3.left + Vector3.up, aimVec)) < 22)
             {
-                Debug.Log("right up");
+                //Debug.Log("right up");
                 gunVec.x = 1;
                 gunVec.y = 1;
             }
             else if (Mathf.Abs(Vector3.Angle(Vector3.left, aimVec)) <= 22)
             {
-                Debug.Log("up");
+                //Debug.Log("up");
                 gunVec.x = 1;
                 gunVec.y = 0;
             }
             else if (Mathf.Abs(Vector3.Angle(Vector3.down, aimVec)) <= 22)
             {
-                Debug.Log("left");
+                //Debug.Log("left");
                 gunVec.x = 0;
                 gunVec.y = -1;
             }
             else if (Mathf.Abs(Vector3.Angle(Vector3.up, aimVec)) <= 22)
             {
-                Debug.Log("right");
+                //Debug.Log("right");
                 gunVec.x = 0;
                 gunVec.y = 1;
             }
