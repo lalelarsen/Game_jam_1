@@ -30,7 +30,6 @@ public class EnemyRollerBehavior : MonoBehaviour
 
         if(lastJump > jumpCD)
         {
-            Debug.Log("jumo");
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             lastJump = 0;
         } else
