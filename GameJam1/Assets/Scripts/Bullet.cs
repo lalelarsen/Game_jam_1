@@ -29,9 +29,12 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.gameObject.layer);
         if(other.tag == "Enemy")
         {
             other.GetComponent<HealthSystem>().TakeDamage(damage);
+            Destroy(gameObject);
+        } else if(other.gameObject.layer == 9){
             Destroy(gameObject);
         }
     }

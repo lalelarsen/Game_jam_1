@@ -345,9 +345,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ca436c5f635fc344b704eb1fb4a5c29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeStrength: {x: 0, y: 0.5, z: 0}
+  placement: 1
   up: 1
-  fallable: 1
+  moving: 0
 --- !u!1 &192126848
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +442,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 195579192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 3.6, z: -8}
+  m_LocalPosition: {x: 21.98, y: 3.6, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 433306168}
@@ -1510,6 +1510,7 @@ MonoBehaviour:
   rightArm: {fileID: 717494568}
   animR: {fileID: 717494570}
   timerObject: {fileID: 1011001760}
+  sidesUp: 1
 --- !u!1 &717494568
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2003,7 @@ GameObject:
   - component: {fileID: 866155914}
   - component: {fileID: 866155916}
   - component: {fileID: 866155915}
+  - component: {fileID: 866155917}
   m_Layer: 8
   m_Name: FloorLeft
   m_TagString: Untagged
@@ -2097,6 +2099,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &866155917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866155913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca436c5f635fc344b704eb1fb4a5c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placement: 0
+  up: 1
+  moving: 0
 --- !u!1 &1011001760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2441,6 +2458,7 @@ GameObject:
   - component: {fileID: 1508911474}
   - component: {fileID: 1508911476}
   - component: {fileID: 1508911475}
+  - component: {fileID: 1508911477}
   m_Layer: 8
   m_Name: FloorRight
   m_TagString: Untagged
@@ -2536,6 +2554,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1508911477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508911473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ca436c5f635fc344b704eb1fb4a5c29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placement: 2
+  up: 1
+  moving: 0
 --- !u!1 &1642776309
 GameObject:
   m_ObjectHideFlags: 0
@@ -3248,7 +3281,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039315012}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 3.6, z: -8}
+  m_LocalPosition: {x: 21.98, y: 3.6, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3306,7 +3339,7 @@ PrefabInstance:
     - target: {fileID: 1577352281210453420, guid: fc0adf9a52d73484d88e8403892bc161,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9
+      value: 21.98
       objectReference: {fileID: 0}
     - target: {fileID: 1577352281210453420, guid: fc0adf9a52d73484d88e8403892bc161,
         type: 3}

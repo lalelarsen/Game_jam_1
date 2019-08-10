@@ -5,41 +5,51 @@ using DG.Tweening;
 
 public class BossFloor : MonoBehaviour
 {
+    public enum Placements { Left, Mid, Right };
+    public Placements placement;
     private Vector3 upPosition;
     private Vector3 downPosition;
     private Vector3 shakePosition;
 
-    public Vector3 shakeStrength = new Vector3 (0,0.5f,0);
+    private Vector3 shakeStrength;
     public bool up = true;
-    public bool fallable = true;
+    public bool moving = false;
     void Start()
     {
+        shakeStrength = new Vector3(0, 0.1f, 0);
         upPosition = gameObject.transform.position;
-        downPosition = new Vector2(gameObject.transform.position.x,gameObject.transform.position.y-3);
+        downPosition = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 3);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(up){
-            transform.DOMove(upPosition,2);
-            fallable = true;
-        } else {
-            if(fallable){
-                transform.DOShakePosition(2, shakeStrength, 0, 180, false, false).OnComplete(()=>{
-                    fallable = false;
-                    transform.DOMove(downPosition,2.5f).SetEase(Ease.Linear).OnComplete(()=>{
-                    });
-                });
-            }
-        }
+
     }
 
-    public void phaseChange(string phase){
-        switch(phase){
-            case "Phase2Trans":
-                up = false;
-            break;
+    public void floorMove(string[] parameters)
+    {
+        if (parameters[0].Contains(this.placement.ToString()) && !moving)
+        {
+            moving = true;
+            switch (parameters[1])
+            {
+                case "Down":
+                    transform.DOShakePosition(2, shakeStrength, 10, 180, false, false).OnComplete(() =>
+                    {
+                        transform.DOMove(downPosition, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
+                        {
+                            moving = false;
+                        });
+                    });
+                    break;
+                case "Up":
+                    transform.DOMove(upPosition, 1.5f).SetEase(Ease.Linear).OnComplete(() =>
+                       {
+                           moving = false;
+                       });
+                    break;
+            }
         }
     }
 
