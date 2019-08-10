@@ -12,6 +12,7 @@ public class BossRoomController : MonoBehaviour
     private bool goToNextPhase = false;
     private int attackMove;
 
+    public GameObject hookBall;
     public GameObject leftArm;
     public Animator animL;
     private Vector2 leftArmStartPos;
@@ -36,7 +37,7 @@ public class BossRoomController : MonoBehaviour
         rightArmStartPos = rightArm.transform.position;
     }
 
-    private int moveNo = 0;
+
     void Update()
     {
 
@@ -49,13 +50,6 @@ public class BossRoomController : MonoBehaviour
             case Phases.Phase1:
                 if (attackMove == 0 && pickNewAttackMove)
                 {
-                    if (moveNo == 1)
-                    {
-                        phase = Phases.Phase2Trans;
-                        moveNo = 0;
-                        return;
-                    }
-                    moveNo++;
                     attackMove = Mathf.RoundToInt(Random.Range(0.5f, 4.5f));
                     // attackMove = 4;
                 }
@@ -88,13 +82,6 @@ public class BossRoomController : MonoBehaviour
             case Phases.Phase2:
                 if (attackMove == 0 && pickNewAttackMove)
                 {
-                    if (moveNo == 1)
-                    {
-                        phase = Phases.Phase3Trans;
-                        moveNo = 0;
-                        return;
-                    }
-                    moveNo++;
                     attackMove = Mathf.RoundToInt(Random.Range(0.5f, 4.5f));
                     // attackMove = 4;
                 }
@@ -165,13 +152,6 @@ public class BossRoomController : MonoBehaviour
 
                 if (attackMove == 0 && pickNewAttackMove)
                 {
-                    if (moveNo == 1)
-                    {
-                        phase = Phases.Phase3Trans;
-                        moveNo = 0;
-                        return;
-                    }
-                    moveNo++;
                     attackMove = Mathf.RoundToInt(Random.Range(0.5f, 2.5f));
                     // attackMove = 4;
                 }
@@ -223,6 +203,17 @@ public class BossRoomController : MonoBehaviour
     private void resetTimer()
     {
         timeStarted = false;
+    }
+
+    public void hitMilestone(string[] parameters){
+        switch(phase){
+            case Phases.Phase1:
+                phase = Phases.Phase2Trans;
+            break;
+            case Phases.Phase2:
+                phase = Phases.Phase3Trans;
+            break;
+        }
     }
 
     #region phase1TransMoves
@@ -345,6 +336,10 @@ public class BossRoomController : MonoBehaviour
     #region phase2TransMoves
     private void Phase2Trans()
     {
+        if(!hookBall.activeSelf){
+            hookBall.SetActive(true);
+            hookBall.transform.DOMove(new Vector2(hookBall.transform.position.x, hookBall.transform.position.y-15), 4);
+        }
         string[] parameters = new string[2];
         parameters[0] = "Mid";
         parameters[1] = "Down";

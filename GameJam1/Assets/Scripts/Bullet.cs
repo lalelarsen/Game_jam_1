@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 
     public int travelSpeed = 150;
     public int damage = 10;
-
+    public LayerMask layerMask;
     private int liveTime = 5;
 
     // Start is called before the first frame update
@@ -29,14 +29,19 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject.layer);
         if(other.tag == "Enemy")
         {
             other.GetComponent<HealthSystem>().TakeDamage(damage);
             Destroy(gameObject);
-        } else if(other.gameObject.layer == 9){
+        } else if(removeBullet(Physics2D.OverlapCircleAll(other.transform.position, .2f, layerMask))){
             Destroy(gameObject);
         }
+    }
+
+    public bool removeBullet(Collider2D[] cols){
+        if (cols.Length <= 0) return false;
+ 
+        return true;
     }
 
 }

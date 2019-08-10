@@ -111,3 +111,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   travelSpeed: 30
   damage: 10
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 768

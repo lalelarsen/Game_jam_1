@@ -7,7 +7,8 @@ public class HealthSystem : MonoBehaviour
     public int health = 100;
     public bool main = true;
     // Max checks for a parent
-    public int parts = 5;
+    public int parentChecks = 5;
+    public int[] milestones;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,18 +23,18 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(int damage)
     {   
-        Debug.Log("Hit enemy");
         if(!main){
-            HealthSystem mainPart = getMainPart(gameObject, 2);
+            HealthSystem mainPart = getMainPart(gameObject, parentChecks);
             mainPart.TakeDamage(damage);
         } else {
             health -= damage;
             //spawn dmg particals
-            Debug.Log(health);
             if(health <= 0)
             {
-                Debug.Log("Dead");
                 Destroy(gameObject);
+            } else if(onMilestone(health)){
+                string[] parameters = new string[0];
+                BroadcastMessage("hitMilestone", parameters);
             }
         }
     }
@@ -50,4 +51,13 @@ public class HealthSystem : MonoBehaviour
         return comp;
     }
 
+    public bool onMilestone(int health){
+        foreach (int i in milestones)
+        {
+            if(health == i){
+                return true;
+            }
+        }
+        return false;
+    }
 }
