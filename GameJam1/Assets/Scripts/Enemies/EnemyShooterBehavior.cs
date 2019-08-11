@@ -28,7 +28,6 @@ public class EnemyShooterBehavior : MonoBehaviour
 
     private void shootPlayerIfInRange(Collider2D[] colliders)
     {
-        Debug.Log(colliders.Length);
         if(colliders.Length > 0)
         {
             shootAtPlayer(colliders[0].transform.position);
@@ -37,8 +36,6 @@ public class EnemyShooterBehavior : MonoBehaviour
 
     private void shootAtPlayer(Vector3 playerPos)
     {
-
-        Debug.Log("shoot");
         lastShot = 0;
         // find bullet vector
         Vector3 bulletTrejectory = playerPos - transform.position;
