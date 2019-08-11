@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 217227932}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BulletSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217227931}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.15, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1034233187}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &1034233186
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1034233187}
   - component: {fileID: 1034233188}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113304736}
   - component: {fileID: 2113304737}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,13 +104,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113304735}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 1034233187}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &2113304737
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577352279644581135}
   - component: {fileID: 1577352279644581134}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: AimIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577352280003281287}
   - component: {fileID: 1577352280003281286}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HookLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,13 +374,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1577352280333119149}
   - component: {fileID: 1577352280333119150}
-  - component: {fileID: 1577352280333119151}
   - component: {fileID: 1577352280333119144}
   - component: {fileID: 1577352280333119145}
   - component: {fileID: 1577352280333119148}
   - component: {fileID: 1577352280333119139}
   - component: {fileID: 1577352280333119138}
-  m_Layer: 0
+  - component: {fileID: 1890907424}
+  m_Layer: 10
   m_Name: Body
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -424,32 +424,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &1577352280333119151
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1577352280333119146}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.13, y: 0.13}
-  m_EdgeRadius: 0
 --- !u!212 &1577352280333119144
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -515,8 +489,13 @@ MonoBehaviour:
   isGrounded: 0
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1792
   groundCheck: {fileID: 1577352281191437099}
+  maxJumpTime: 0.5
+  currentJumpTime: 0
+  pushed: 0
+  rb: {fileID: 0}
+  targetedVelocity: {x: 0, y: 0}
 --- !u!114 &1577352280333119148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,7 +512,7 @@ MonoBehaviour:
   grapplingHook: {fileID: 1577352281258768078}
   hookAble:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1792
   line: {fileID: 1577352280003281286}
 --- !u!232 &1577352280333119139
 DistanceJoint2D:
@@ -568,6 +547,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionRange: 5
   interact: 0
+--- !u!58 &1890907424
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577352280333119146}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.07
 --- !u!1 &1577352281191437108
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,7 +572,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1577352281191437099}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577352281210453420}
   - component: {fileID: 1275056258}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -646,6 +641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNum: 1
+  moveDir: 0
 --- !u!1 &1577352281258768078
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,7 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577352281258768077}
   - component: {fileID: 1577352281258768076}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GrapplingHook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
