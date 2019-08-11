@@ -37,14 +37,14 @@ public class BossFloor : MonoBehaviour
                 case "Down":
                     transform.DOShakePosition(2, shakeStrength, 10, 180, false, false).OnComplete(() =>
                     {
-                        transform.DOMove(downPosition, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
+                        transform.DOMove(downPosition, 1.5f).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             moving = false;
                         });
                     });
                     break;
                 case "Up":
-                    transform.DOMove(upPosition, 1.5f).SetEase(Ease.Linear).OnComplete(() =>
+                    transform.DOMove(upPosition, 2.5f).SetEase(Ease.Linear).OnComplete(() =>
                        {
                            moving = false;
                        });

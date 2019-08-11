@@ -45,7 +45,6 @@ public class PlayerHealth : MonoBehaviour
         }
         if(applyForce){
             if(!forceCD){
-                // MoveScript.currentJumpTime = MoveScript.maxJumpTime;
                 MoveScript.rb.velocity = new Vector2(MoveScript.rb.velocity.x, 0);
                 MoveScript.targetedVelocity.y = 1200;
                 MoveScript.pushed = true;
@@ -54,7 +53,7 @@ public class PlayerHealth : MonoBehaviour
             }
         }
         if(health == 0){
-            //Ded
+            Destroy(gameObject);
         }
     }
 }

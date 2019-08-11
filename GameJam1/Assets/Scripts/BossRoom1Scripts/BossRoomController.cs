@@ -82,25 +82,21 @@ public class BossRoomController : MonoBehaviour
             case Phases.Phase2:
                 if (attackMove == 0 && pickNewAttackMove)
                 {
-                    attackMove = Mathf.RoundToInt(Random.Range(0.5f, 4.5f));
+                    attackMove = Mathf.RoundToInt(Random.Range(0.5f, 3.5f));
                     // attackMove = 4;
                 }
                 switch (attackMove)
                 {
                     case 1:
-                        moveFromRightSide();
+                        moveFromSides();
                         break;
 
                     case 2:
-                        moveFromLeftSide();
+                        hitFromLeftSide();
                         break;
 
                     case 3:
                         hitFromRightSide();
-                        break;
-
-                    case 4:
-                        hitFromLeftSide();
                         break;
                 }
                 break;
@@ -279,7 +275,7 @@ public class BossRoomController : MonoBehaviour
         Sequence moveSequence = DOTween.Sequence();
         moveSequence.Append(rightArm.transform.DOMove(tempArmPos, 2));
         tempArmPos.x = leftArmStartPos.x;
-        moveSequence.Append(rightArm.transform.DOMove(tempArmPos, 6));
+        moveSequence.Append(rightArm.transform.DOMove(tempArmPos, 4));
         tempArmPos.y = leftArmStartPos.y;
         moveSequence.Append(rightArm.transform.DOMove(tempArmPos, 2));
         moveSequence.AppendCallback(() =>
@@ -320,7 +316,7 @@ public class BossRoomController : MonoBehaviour
         Sequence moveSequence = DOTween.Sequence();
         moveSequence.Append(leftArm.transform.DOMove(tempArmPos, 2));
         tempArmPos.x = rightArmStartPos.x;
-        moveSequence.Append(leftArm.transform.DOMove(tempArmPos, 6));
+        moveSequence.Append(leftArm.transform.DOMove(tempArmPos, 4));
         tempArmPos.y = rightArmStartPos.y;
         moveSequence.Append(leftArm.transform.DOMove(tempArmPos, 2));
         moveSequence.AppendCallback(() =>
