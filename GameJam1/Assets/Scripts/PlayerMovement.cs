@@ -49,7 +49,10 @@ public class PlayerMovement : MonoBehaviour
     {
         currentJumpTime -= Time.fixedDeltaTime;
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadiusCheck, whatIsGround);
-        if(pushed){
+
+        preventInfinateJump();
+
+        if (pushed){
             rb.AddForce(new Vector2(targetedVelocity.x, targetedVelocity.y));
             pushed = false;
         }
@@ -93,6 +96,22 @@ public class PlayerMovement : MonoBehaviour
             // falling
         }
 
+    }
+
+    private void preventInfinateJump()
+    {
+        var colls = Physics2D.OverlapCircleAll(groundCheck.position, groundRadiusCheck, whatIsGround);
+        foreach (Collider2D col in colls)
+        {
+            if (col.tag == "Player")
+            {
+                var pm = col.GetComponent<PlayerMovement>();
+                if (pm.playerNum == this.playerNum && colls.Length <= 1)
+                {
+                    isGrounded = false;
+                }
+            }
+        }
     }
 
     public void enableDrag(bool enable)
