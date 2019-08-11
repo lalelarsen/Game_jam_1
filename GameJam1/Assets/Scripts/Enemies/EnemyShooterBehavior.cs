@@ -5,24 +5,34 @@ using UnityEngine;
 public class EnemyShooterBehavior : MonoBehaviour
 {
     public GameObject bulletPrefab;
-    
+    public LayerMask layerMask;
+
+    private readonly float detectionRadius = 100f;
     private readonly float shootCD = 2;
     private float lastShot = 0;
     private Vector2 aim;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
+        if (lastShot > shootCD)
+        {
+            shootPlayerIfInRange(Physics2D.OverlapCircleAll(transform.position, detectionRadius, layerMask));
+        }
+        else
+        {
+            lastShot += Time.deltaTime;
+        }
 
-        lastShot += Time.deltaTime;
-        //Debug.Log(lastShot);
+    }
 
+    private void shootPlayerIfInRange(Collider2D[] colliders)
+    {
+        Debug.Log(colliders.Length);
+        if(colliders.Length > 0)
+        {
+            shootAtPlayer(colliders[0].transform.position);
+        }
     }
 
     private void shootAtPlayer(Vector3 playerPos)
@@ -45,18 +55,6 @@ public class EnemyShooterBehavior : MonoBehaviour
         Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0f, 0f, rot_z));
 
         // init bullet
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if(other.tag == "Player")
-        {
-            Debug.Log("found player");
-            if(lastShot > shootCD)
-            {
-                shootAtPlayer(other.transform.position);
-            }
-        }
     }
 
 }
