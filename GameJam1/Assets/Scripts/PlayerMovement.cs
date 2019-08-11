@@ -18,14 +18,15 @@ public class PlayerMovement : MonoBehaviour
     private int jumpForce = 5;
     private float maxVelocity = 10;
     private float groundRadiusCheck = .1f;
-    private float maxJumpTime = 0.5f;
-    private float currentJumpTime;
+    public float maxJumpTime = 0.5f;
+    public float currentJumpTime;
     private bool movementDisabled = false;
+    public bool pushed = false;
 
     private PlayerController playerCon;
     private GrapplingHook grapplingHook;
-    private Rigidbody2D rb;
-    private Vector2 targetedVelocity;
+    public Rigidbody2D rb;
+    public Vector2 targetedVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,12 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        currentJumpTime -= Time.fixedDeltaTime;
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadiusCheck, whatIsGround);
+        if(pushed){
+            rb.AddForce(new Vector2(targetedVelocity.x, targetedVelocity.y));
+            pushed = false;
+        }
         if (!movementDisabled)
         {
             if (rb.velocity.x * moveDir > maxVelocity)
@@ -79,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!isGrounded && jumpPressed && currentJumpTime > 0 && !movementDisabled)
         {
-            currentJumpTime -= Time.fixedDeltaTime;
             targetedVelocity.x = rb.velocity.x;
             targetedVelocity.y = 18;
             rb.AddForce(targetedVelocity);
